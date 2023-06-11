@@ -1,1 +1,49 @@
+#!/bin/bash
+
+Col_=8
+Row_=8
+
+declare -A model
+
+for ((i=1; i<=Row_; i++)); do
+  for ((j=1; j<=Col_; j++)); do
+    model[$i,$j]=1
+  done
+done
+
+obstacle_bb8() {
+  local row=$1
+  local column=$2
+  model[$row,$column]=0
+}
+
+move_bb8() {
+  local current_row=$1
+  local current_column=$2
+  local new_row=$3
+  local new_column=$4
+
+   if [[ $new_row -ge 1 && $new_row -le $Row_ && $new_column -ge 1 && $new_column -le $Col_ ]]; then
+        if [[ ${model[$new_row,$new_column]} -eq 1 ]]; then
+         model[$current_row,$current_column]=1
+         model[$new_row,$new_column]="BB8" 
+         
+         echo "Moved BB8"
+       else
+         echo "Obstacle detected."
+    fi
+  else
+    echo "Not defined."
+  fi
+}
+
+# Function to visually represent the workspace and robot's position
+visualize_model() {
+  for ((i=1; i<=Row_; i++)); do
+    for ((j=1; j<=Col_; j++)); do
+      echo -n "${model[$i,$j]} "
+    done
+    echo
+  done
+}
 
